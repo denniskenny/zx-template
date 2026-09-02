@@ -73,7 +73,7 @@ change its attribute cells in the sheet — nothing else.
 
 ## Adding a sprite type
 
-Units are simpler — there is no `.tmx` side, so it is draw + count:
+Sprites are simpler — there is no `.tmx` side, so it is draw + count:
 
 1. **Draw it in both sprite sheets**, same column position in each:
    `assets/sprites_map.zxp` (16x16) and `assets/sprites_view.zxp` (32x32).

@@ -119,7 +119,7 @@ def report(top_addr, top_name, limit):
 
 
 def free_report(top_addr, limit, mapfile):
-    """The four budgets, on four lines, in the units a feature is planned in.
+    """The four budgets, on four lines, in the terms a feature is planned in.
 
        `make memmap` prints the whole layout; this prints only what is
        LEFT, because "can this feature fit?" was being answered by reading

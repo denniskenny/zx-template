@@ -425,8 +425,8 @@ worst place.** Measured on this project's two Tritone tunes:
 
 | | assembled | ZX0 | |
 |---|---|---|---|
-| grenadiers (title) | 513 | **190** | 63% |
-| lowlands (summary) | 264 | **123** | 53% |
+| a 13-bar march | 513 | **190** | 63% |
+| a 7-bar shanty  | 264 | **123** | 53% |
 | | 777 | 313 | **~430 bytes** |
 
 Patterns repeat and half of every row is a `$01` sustain byte. Those bytes
@@ -546,7 +546,7 @@ Exactly one translation sprite claims each header:
 ```
 
 - **The claim must precede every include**, not just the direct one.
-  `board.h` reaches `level_1.h`; a claim made after that arrives too late and
+  `board.h` reaches `map_1.h`; a claim made after that arrives too late and
   nobody defines the data.
 - `extern const x[36] = {...}` is **still a definition** — the initialiser is
   what matters, not the keyword. The guard has to wrap the whole array.
