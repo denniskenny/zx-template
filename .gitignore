@@ -1,0 +1,6 @@
+build/
+*.tap
+*.map
+*.bin
+*.o
+assets/music/*_linkable.asm
