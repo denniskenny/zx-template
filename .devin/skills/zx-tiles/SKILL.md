@@ -79,7 +79,7 @@ Sprites are simpler — there is no `.tmx` side, so it is draw + count:
    `assets/sprites_map.zxp` (16x16) and `assets/sprites_view.zxp` (32x32).
 2. **Bump `UNIT_COUNT`** in the Makefile (currently 4).
 3. **Extend the sprite table** in `docs/DESIGN.md` in the same order —
-   INFANTRY, TANK, CANNON, BASE — and the stat tables in
+   one entry per sprite type, in sheet order — and any stat tables in
    `config/game_config.h` (`sprite_range`, `sprite_damage`, `sprite_health`,
    `sprite_movement`, and the start/per-level counts), which are indexed by the
    same id. `src/app.c` has a `#if` that fails the build if the sheets and

@@ -13,8 +13,8 @@ converts each one into a C header of **raw Tiled GIDs**, ZX0-compressed; the
 runtime decompresses one level at a time and converts those GIDs into its own
 terrain ids in memory at load time.
 
-**Naming**: one map per level, `level_N.tmx` → `include/level_N.h` →
-`LEVEL_N_*` / `level_N_gids_zx0[]`. The campaign is `level_1` .. `level_10`,
+**Naming**: one map per level, `map_N.tmx` → `include/map_N.h` →
+`MAP_N_*` / `map_N_gids_zx0[]`. Maps are `map_1` .. `map_N`,
 all 14x7 and all sharing one tileset; `src/app.c` includes all ten and picks
 one through `level_maps[]`.
 
@@ -53,7 +53,7 @@ Terrain id = `GID - NAME_GID_FIRST`, which is also the tile's column in the
 | Worked example | `assets/maps/map_1.tmx` → `include/map_1.h` |
 | Runtime loader | `load_map()` in `src/app.c`, level chosen by `level` |
 
-## The campaign: ten levels, compressed, one shared tileset
+## The map set: ten levels, compressed, one shared tileset
 
 Ten 14x7 maps would be 980 bytes of GIDs and ten identical copies of the
 terrain tables, which a 48K machine notices. Two build flags avoid that:
@@ -74,7 +74,7 @@ sized from level 1.
 **Ordering trap**: make picks the *first* matching pattern rule, so
 `include/level_%.h` must appear before the catch-all `include/%.h:
 assets/maps/%.tmx` in the Makefile. Behind it, levels silently build raw and
-uncompressed, and the link then fails on the missing `level_N_gids_zx0`.
+uncompressed, and the link then fails on the missing `map_N_gids_zx0`.
 
 Adding level 11: author the `.tmx`, append `11` to `LEVELS` in the Makefile,
 and add the blob and start tile to `level_maps[]` / `level_start[]` in
@@ -144,14 +144,14 @@ hand-written map can still be edited in the GUI afterwards.
 
 ## Adding a new map (level)
 
-1. **Author** `assets/maps/level_N.tmx` (copy `map_1.tmx` or the template).
-   `NAME` below is the file stem, so `level_2` gives `LEVEL_2_*`.
+1. **Author** `assets/maps/map_N.tmx` (copy `map_1.tmx` or the template).
+   `NAME` below is the file stem, so `level_2` gives `MAP_2_*`.
 2. **Register it** in the Makefile: append the number to `LEVELS`. The
    `include/level_%.h` rule and `GENERATED_HEADERS` (which expands
-   `$(LEVEL_HEADERS)`) then pick it up, and `include/level_*.h` is already
+   `$(MAP_HEADERS)`) then pick it up, and `include/level_*.h` is already
    gitignored. A map that is *not* a level needs its own header added to
    `GENERATED_HEADERS` by hand.
-3. **Use it** from C: `#include "../include/level_N.h"`, then add its blob and
+3. **Use it** from C: `#include "../include/map_N.h"`, then add its blob and
    start tile to `level_maps[]` / `level_start[]` in `src/app.c` and extend
    the size/SIG `#if` guards.
 4. **Build & check** (see Verifying).
