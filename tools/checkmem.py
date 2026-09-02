@@ -5,7 +5,7 @@ This program's memory comes from two places that never see each other,
 which is how it has gone wrong before:
 
   * the LINKER places code, rodata, data and bss from the load address
-    upwards, and only zxstrategy.map knows where they ended up;
+    upwards, and only zxgame.map knows where they ended up;
   * include/memmap.h places the big buffers BY HAND, and only the C
     preprocessor knows where those are.
 
@@ -27,8 +27,8 @@ The stack is not checked.  z88dk leaves it near 0x7FA0, below the
 program and above BASIC, in the page-5 RAM that is always mapped.
 
 Usage:
-    python3 tools/checkmem.py zxstrategy.map [--limit 0xC000]
-    python3 tools/checkmem.py zxstrategy.map --layout
+    python3 tools/checkmem.py zxgame.map [--limit 0xC000]
+    python3 tools/checkmem.py zxgame.map --layout
 """
 
 import os

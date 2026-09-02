@@ -170,7 +170,7 @@ def main():
     ap.add_argument('output')
     ap.add_argument('--clear', type=lambda s: int(s, 0), required=True)
     ap.add_argument('--usr', type=lambda s: int(s, 0), required=True)
-    ap.add_argument('--name', default='zxstrategy')
+    ap.add_argument('--name', default='zxgame')
     ap.add_argument('--code', nargs=2, action='append', metavar=('ADDR', 'FILE'),
                     required=True, help='load address and binary, repeatable')
     ap.add_argument('--splash', nargs=2, action='append', default=[],

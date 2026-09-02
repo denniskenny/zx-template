@@ -126,7 +126,7 @@ Token grammar (per channel line, space-separated):
    ```make
    MUSIC_ENGINE = assets/music/tritone_engine.asm
    MUSIC_LINKABLE = $(MUSIC_ENGINE) \
-                    assets/music/lowlands_linkable.asm \
+                    assets/music/the example tune_linkable.asm \
                     assets/music/NAME_linkable.asm
    ```
    The generic pattern rules (`%.asm: %.txt`, `%_linkable.asm: %.asm`) do the
@@ -143,7 +143,7 @@ Token grammar (per channel line, space-separated):
    returns on any key/joystick press). Never call it from the synced frame
    loop — it owns the speaker and blocks. `src/app.c` shows the pattern in
    `play_music()`: `enter_title()` paints the screen, then puts a banner on the
-   hint line, calls `lowlands_play()`, and on return restores the line and
+   hint line, calls `the example tune_play()`, and on return restores the line and
    flushes the key that stopped it. It is a **long operation**, not a state —
    see `docs/DESIGN.md`. Paint before you play: the screen is the only thing
    the first-side has to look at while the CPU is gone.
@@ -201,6 +201,6 @@ PY
   `--engine`); every tune module links against its `TRI_PLAY`.
 - `assets/music/tritone_template.asm` — Beepola export minus song data; the
   engine source (`--engine`) and the `--template` default for `txt2tritone.py`.
-- `assets/music/lowlands.txt` — Lowlands Away; the single example melody
+- `assets/music/NAME.txt` — one arrangement per tune, written by hand
   shipped with this template, played automatically on the title screen.
 - `include/music.h` — C declarations for the linked tunes.

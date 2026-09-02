@@ -213,7 +213,7 @@ def build_asm(template, bars, global_speed, rows, chan_pw):
     # The song layout is a list of pointers, so a bar that encodes to the
     # same bytes as an earlier one costs two bytes in the list instead of
     # a whole pattern.  Repeats are the norm in marches and dance tunes --
-    # The British Grenadiers repeats "d2 G2 BAGF" verbatim -- and at 8
+    # A march that repeats a phrase verbatim is the norm -- and at 8
     # rows a pattern is ~34 bytes, which is the difference between a tune
     # fitting under the 0xC000 ceiling and not.
     encoded = []

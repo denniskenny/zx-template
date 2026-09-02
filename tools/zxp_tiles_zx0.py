@@ -116,7 +116,7 @@ def frames_layout(pixels, tiles, frames):
     th = h // tiles
     if w % frames or h % tiles:
         die(f"sheet {w}x{h} does not divide into {frames} frames "
-            f"by {tiles} units")
+            f"by {tiles} columns")
     return tw, th, [[(f * tw, u * th) for f in range(frames)]
                     for u in range(tiles)]
 
