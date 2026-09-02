@@ -554,7 +554,7 @@ Exactly one translation sprite claims each header:
   means nobody claimed it, *duplicate symbol* means two files did.
 
 Current owners: `src/render.c` takes the tile sheets and level 1; `src/cold.c`
-takes campaign maps 2-10.
+takes the remaining maps.
 
 The same trap applies to any header pulling in a generated one for its *size
 macros* — the data comes along. `include/memmap.h` and `include/render.h` both

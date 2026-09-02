@@ -13,7 +13,7 @@ cell size — background and sprites use the same format and the same converter:
 
 | Sheet | Cell size | Used by |
 |-------|-----------|---------|
-| `assets/tiles_map.zxp` | 16x16 px (2x2 chars) | `ST_MAP` campaign overview |
+| `assets/tiles_map.zxp` | 16x16 px (2x2 chars) | `ST_MAP` overview screen |
 | `assets/tiles_view.zxp` | 32x32 px (4x4 chars) | `ST_MAIN` paged field view |
 | `assets/sprites_map.zxp` | 16x16 px (2x2 chars) | sprites on `ST_MAP` |
 | `assets/sprites_view.zxp` | 32x32 px (4x4 chars) | sprites on `ST_MAIN` |
