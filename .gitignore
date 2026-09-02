@@ -4,3 +4,8 @@ build/
 *.bin
 *.o
 assets/music/*_linkable.asm
+
+# built artefacts
+zxgame
+zxgame.tap
+zxgame.map
