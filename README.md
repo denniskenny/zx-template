@@ -26,7 +26,7 @@ Read these first; they are the reason this repo exists.
 
 | skill | what it knows |
 |---|---|
-| `zx-memory` | the 48K/128K/+3 map, contended vs uncontended, banking, the ROM-select trap, compressing read-mostly data |
+| `zx-memory` | the 48K/128K/+3 map, contended vs uncontended, banking, the ROM-select trap, compressing music and text |
 | `zx-loader` | building a multi-block `.tap` by hand, loading into a bank, the loading screen, silencing the ROM's messages |
 | `zx-tiles` | tile and sprite sheets in ZX-Paintbrush, masks, attribute modes |
 | `tiled-maps` | importing Tiled `.tmx` maps, GID mapping, per-map headers |
@@ -35,6 +35,10 @@ Read these first; they are the reason this repo exists.
 | `floating-bus-vsync` | tear-free frames without interrupts, on all three machines |
 | `zesarux-test` | driving the emulator headlessly over ZRCP |
 | `test-design` | writing emulator tests that are capable of failing |
+| `zx0-layout` | **start here on a new project**: which region code, graphics, text and audio each belong in, and what is worth compressing |
+
+`zx0-layout` is the one to read first on a greenfield project -- it is the
+layout decision, made once, that everything else depends on.
 
 `test-design` is the one to read before writing a harness. Every rule in it
 is there because a test passed while the bug was still on screen.
