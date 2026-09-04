@@ -11,11 +11,13 @@ where they belong.
 ## What is here
 
 ```
-.devin/skills/          nine skills: the platform knowledge
+.devin/skills/          ten skills: the platform knowledge
 src/dzx0.c              ZX0 decompression, C wrapper round z88dk's asm
 include/dzx0.h
 src/music.c             tunes, unpacked on the way in
 include/music.h
+text/strings.txt        every string the player reads
+tools/mktext.py         -> include/strings.h + src/strings.c
 assets/music/           the Tritone engine and its Beepola template
 tools/                  the build-time converters
 ```
@@ -66,6 +68,18 @@ zcc links ONE shared engine + one blob per tune
 `src/music.c` unpacks a tune into a single shared buffer and calls the
 engine. One buffer, because tunes block: only one is ever live.
 
+### Strings
+
+`text/strings.txt` holds every string, as `ID = the text`. The generator
+deduplicates identical text, rejects a string wider than the screen, and
+emits `TXT_*` names to use at the call site.
+
+Not compressed here, and the numbers are the reason: 14 strings are 194
+bytes and ZX0 takes them to 162 -- 32 bytes saved against a 194-byte
+buffer and a call at boot. Add `--zx0` when the text grows; at 46 strings
+and 628 bytes the same switch saved 272 bytes net. The tool prints both
+figures so the decision stays a measurement.
+
 ### The tools
 
 | tool | job |
@@ -76,6 +90,7 @@ engine. One buffer, because tunes block: only one is ever live.
 | `zxp_tiles_zx0.py` | ZX-Paintbrush strips -> compressed tile/sprite headers |
 | `mklogo.py` | a `.zxp` -> raw display-file blocks for a loading screen |
 | `txt2tritone.py`, `gen_tritone_module.py` | the music pipeline |
+| `mktext.py` | `text/strings.txt` -> a header of `TXT_*` plus a C source |
 
 ## What is NOT here
 

@@ -12,6 +12,11 @@
 # disappears the moment something pages a bank, and the failure looks
 # like random corruption rather than a crash.  See .devin/skills/zx-memory.
 
+# Explicit, because Make takes the FIRST target in the file as the goal
+# and a rule added above `all:` silently becomes the default -- which is
+# what happened when the strings generator was added.
+.DEFAULT_GOAL := all
+
 Z88DK  ?= $(HOME)/z88dk
 ZCC    ?= $(Z88DK)/bin/zcc
 ZCCCFG ?= $(Z88DK)/lib/config
@@ -38,9 +43,23 @@ CFLAGS = +zx -vn -SO3 $(ORG_DEF) -startup=31 --opt-code-size \
          -Cc--max-allocs-per-node=50000
 LDFLAGS = -lm -create-app
 
-SRCS = src/main.c src/hw_detect.c src/vsync.c src/gfx.c src/no_font64.asm
+SRCS = src/main.c src/strings.c src/hw_detect.c src/vsync.c src/gfx.c \
+       src/no_font64.asm
 HEADERS = config/app_config.h include/gfx.h include/hw.h include/vsync.h \
-          include/memmap.h
+          include/memmap.h include/strings.h
+
+# text/strings.txt -> the generated pair.  Every string the player reads
+# lives in that one file, identical text is stored once, and the build
+# fails on a string wider than the screen.
+#
+# Add --zx0 $(ZX0) when the text is worth compressing; tools/mktext.py
+# prints the before and after so the decision is a measurement.  Below a
+# few hundred bytes it is not worth the buffer.
+ZX0 ?= $(Z88DK)/bin/z88dk-zx0
+
+include/strings.h src/strings.c: text/strings.txt tools/mktext.py
+	$(PYTHON) tools/mktext.py $< --header include/strings.h \
+	    --source src/strings.c --width 32
 
 .PHONY: all clean map run
 all: $(APP).tap

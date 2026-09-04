@@ -418,6 +418,41 @@ it does not know about `memmap.h`. And an asset used *once at boot* can
 hide a placement bug that an asset used *per level* exposes; if graphics
 survive the title screen, that is not evidence they are safely placed.
 
+## Never bank data you must read WHILE DRAWING
+
+On a 128K the shadow screen is at `0xC000`, and so is the only window a
+RAM bank can be paged into. They are the same sixteen kilobytes.
+
+So anything paged in at `0xC000` is unavailable for as long as it is
+paged, and if the code doing the paging also draws to the shadow screen,
+**the bank replaces the screen it is drawing to.**
+
+Measured, by putting a 768-byte font in a bank and pointing the character
+printer at it:
+
+```
+48k    ' LABEL  :SOMETHING 025/025 R0 M0'    perfect
+128k   ' ?A?E?  :?OME??ING 2?/ 2? R  ? '    corrupt
+```
+
+Corruption ONLY on the machine that double-buffers -- the signature of
+exactly this collision. The glyph writes were landing in the font bank
+and the reads were colliding with the screen.
+
+**Banks are for data read at a moment you control**: a cutscene picture
+decompressed while nothing else happens, a tune unpacked before it plays,
+a level loaded between turns. They are not for anything a per-frame or
+per-character routine reads.
+
+The escape -- page in, copy the one glyph, page out, draw -- is two page
+switches per character. Costed and rejected.
+
+Note also that everything else above `0xC000` is in the SAME window: the
+compose buffer, the tile sheets, the string pool. Paging a bank in hides
+all of them, which is why unpacking must happen after the map is settled
+and why a cutscene cannot print while its bank is in. Three separate
+bugs in this project, one cause.
+
 ## Compressing read-mostly data: music, and text
 
 *Laying out a NEW project?  `.devin/skills/zx0-layout` covers the
@@ -430,8 +465,8 @@ worst place.** Measured on this project's two Tritone tunes:
 
 | | assembled | ZX0 | |
 |---|---|---|---|
-| a 13-bar march | 513 | **190** | 63% |
-| a 7-bar shanty  | 264 | **123** | 53% |
+| a march (title) | 513 | **190** | 63% |
+| a shanty (summary) | 264 | **123** | 53% |
 | | 777 | 313 | **~430 bytes** |
 
 Patterns repeat and half of every row is a `$01` sustain byte. Those bytes

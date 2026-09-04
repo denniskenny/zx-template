@@ -1,0 +1,40 @@
+# strings.txt -- every string the program shows the player.
+#
+#   ID = the text
+#
+# Trailing spaces matter and several strings will depend on them, so quote
+# anything with padding.  tools/mktext.py turns this into
+# include/strings.h and src/strings.c; identical text is stored once.
+#
+# The screen is 32 characters wide and the build FAILS on anything longer.
+# That check earns its keep: it is easy to write a hint that fits in the
+# editor and is truncated on the machine.
+#
+# NOT COMPRESSED, and the numbers say why.  These 14 strings are 194
+# bytes and ZX0 takes them to 162 -- a saving of 32, against a 194-byte
+# buffer to unpack into and a call at boot.  Compression needs a run of
+# data to find repetition in; a few hundred bytes of text is not one.
+#
+# Pass --zx0 to tools/mktext.py when the text grows.  For scale: at 46
+# strings and 628 bytes the same switch saved 272 bytes net and paid for
+# itself easily.  Somewhere between those two is the crossover, and the
+# tool prints both numbers so you can see where you are.
+
+TITLE                          = ZX TEMPLATE
+
+LBL_MACHINE                    = "MACHINE :"
+LBL_KEMPSTON                   = "KEMPSTON:"
+LBL_VSYNC                      = "VSYNC   :"
+
+MACHINE_128K                   = 128K CLASS
+MACHINE_48K                    = 48K
+YES                            = YES
+NO                             = NO
+
+VSYNC_BUS_48K                  = FLOATING BUS 0X40FF
+VSYNC_BUS_128K                 = FLOATING BUS 0X0FFD
+VSYNC_HALT                     = HALT FALLBACK
+
+NOTE_1                         = BORDER STEPS ONCE A FRAME.
+NOTE_2                         = A STEADY EDGE MEANS IT IS
+NOTE_3                         = IN STEP WITH THE BEAM.

@@ -27,7 +27,7 @@ So the address space splits into regions that are NOT interchangeable:
 | `0x5B00-0x7FFF` | ~9K | **cold code**, buffers | CONTENDED: ~40% slower |
 | `0x8000-0xBFFF` | 16K | **all hot code**, rodata, bss | the scarce one |
 | `0xC000-0xFFFF` | 16K | **data only, never code** | a bank on a 128K |
-| banks 1,3,4,6 | 64K | bulk storage | 128K/+3 ONLY |
+| banks 1,3,4,6 | 64K | bulk storage | 128K/+3 ONLY, and see below |
 
 **`0x8000-0xBFFF` is the budget.** Everything else is comparatively
 plentiful, and the whole game of laying out a Spectrum project is moving
@@ -86,6 +86,31 @@ with no decoder at all.
   Compression finds redundancy ACROSS items. Splitting per level or per
   screen throws away the repetition that makes the data compressible in
   the first place.
+
+## What a bank can and cannot hold
+
+A bank is paged in at `0xC000` -- **the same window as the shadow screen
+and every buffer above it.** While a bank is in, none of that is
+reachable.
+
+```
+GOOD in a bank    read at a moment you control:
+                  a picture decompressed while nothing else happens,
+                  a tune unpacked before it plays, a level between turns
+BAD in a bank     anything a per-frame or per-character routine reads
+```
+
+A 768-byte font was put in a bank and the printer pointed at it. It works
+on a 48K, which has no paging, and corrupts on a 128K, which draws to the
+shadow screen the bank displaces:
+
+```
+48k    ' LABEL  :SOMETHING 025/025 R0 M0'
+128k   ' ?A?E?  :?OME??ING 2?/ 2? R  ? '
+```
+
+**If a routine both pages and draws, it cannot use the bank window for
+either.**
 
 ## Two traps that cost real days
 

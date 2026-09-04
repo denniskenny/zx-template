@@ -34,6 +34,7 @@
 #include "../config/app_config.h"
 #include "../include/gfx.h"
 #include "../include/hw.h"
+#include "../include/strings.h"
 #include "../include/vsync.h"
 
 /* Names for what vsync_detect() decided.  Worth printing: which one you
@@ -42,9 +43,9 @@
 static const char *vsync_name(void)
 {
     switch (vsync_mode) {
-        case VSYNC_MODE_48K:  return "FLOATING BUS 0X40FF";
-        case VSYNC_MODE_128K: return "FLOATING BUS 0X0FFD";
-        default:              return "HALT FALLBACK";
+        case VSYNC_MODE_48K:  return TXT_VSYNC_BUS_48K;
+        case VSYNC_MODE_128K: return TXT_VSYNC_BUS_128K;
+        default:              return TXT_VSYNC_HALT;
     }
 }
 
@@ -66,21 +67,21 @@ int main(void)
     gfx_target(SCREEN);
     screen_clear(0x07);         /* white on black, the whole screen */
 
-    print_at(1, 1, "ZX TEMPLATE");
+    print_at(1, 1, TXT_TITLE);
     set_attr_rect(0, 1, 32, 1, 0x45);
 
-    print_at(1, 4, "MACHINE :");
-    print_at(11, 4, is_128k ? "128K CLASS" : "48K");
+    print_at(1, 4, TXT_LBL_MACHINE);
+    print_at(11, 4, is_128k ? TXT_MACHINE_128K : TXT_MACHINE_48K);
 
-    print_at(1, 5, "KEMPSTON:");
-    print_at(11, 5, has_kempston ? "YES" : "NO");
+    print_at(1, 5, TXT_LBL_KEMPSTON);
+    print_at(11, 5, has_kempston ? TXT_YES : TXT_NO);
 
-    print_at(1, 6, "VSYNC   :");
+    print_at(1, 6, TXT_LBL_VSYNC);
     print_at(11, 6, vsync_name());
 
-    print_at(1, 9, "BORDER STEPS ONCE A FRAME.");
-    print_at(1, 10, "A STEADY EDGE MEANS IT IS");
-    print_at(1, 11, "IN STEP WITH THE BEAM.");
+    print_at(1, 9, TXT_NOTE_1);
+    print_at(1, 10, TXT_NOTE_2);
+    print_at(1, 11, TXT_NOTE_3);
 
     /* THE FRAME LOOP.
      *
